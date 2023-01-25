@@ -1,13 +1,17 @@
 from ..constant import *
+
+import os
 import pygame
 from pygame.locals import * 
 
 def resize_alpha(path:str) -> pygame.Surface: 
-    img = pygame.image.load(path).convert_alpha()
+    main_path  = os.path.dirname(os.path.abspath(__file__))[:-12]
+    img = pygame.image.load(main_path + path).convert_alpha()
     return pygame.transform.scale(img, (sprite_size,sprite_size))
     
 def resize(path:str) -> pygame.Surface: 
-    img = pygame.image.load(path).convert()
+    main_path  = os.path.dirname(os.path.abspath(__file__))[:-12]
+    img = pygame.image.load(main_path + path).convert()
     return pygame.transform.scale(img, (sprite_size,sprite_size))
 
 def get_basic_wall() -> pygame.Surface: 

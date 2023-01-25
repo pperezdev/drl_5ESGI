@@ -19,8 +19,6 @@ game = facades.grid_world_5x5()
 #game = facades.line_world_1x5()
 
 game.run()
-
-print(game.status)
 ```
 
 le ```game.status``` vous indique l'état de la partie.
@@ -30,9 +28,36 @@ il peut avoir comme état :
 - <span style="color:green">victory</span>
 - <span style="color:red">defeat</span>
 
+Vous pouvez ensuite utiliser les fonctions si dessous pour faire 
+bouger votre agent :
+- ```game.up()```
+- ```game.down()```
+- ```game.right()```
+- ```game.left()```
 
 ### Lancer ou visualiser les expérience
 Rendez vous dans le dossier Experiments
+
+Voici un exemple d'experiment :
+```python
+import sys
+import time
+
+sys.path.append('..')
+
+from back import facades
+
+game = facades.line_world_1x5()
+
+game.run(visible=False, asynchrone=True)
+
+while game.thread.is_alive():
+    game.right()
+    print(game.status)
+    time.sleep(game.clock.tick(30)/100)
+game.stop()
+
+```
 
 
 ## Contenu
