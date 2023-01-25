@@ -9,8 +9,17 @@ class WorldPacMan(World):
     def __init__(self, data:str) -> None:
         self.agent_spawn_x = 0
         self.agent_spawn_y = 0
+        
+        self.ground = '0'
+        self.wall = '1'
+        self.ball = '2'
+        self.mega_ball = '3'
+        self.enemy_spawn = '4'
         self.spawn_number = '5'
         
+        self.green_flag = '9'
+        self.red_flag = '8'
+    
         self.structure = self.get_structure(data)
         self.x = len(self.structure[0]) -1
         self.y = len(self.structure) -1
@@ -21,20 +30,20 @@ class WorldPacMan(World):
         x = pos_x * sprite_size
         y = pos_y * sprite_size
         
-        if sprite == '0' or sprite == '5':
+        if sprite == self.ground or sprite == self.spawn_number:
             window.blit(get_basic_road(), (x,y))
-        if sprite == '2':
+        if sprite == self.ball:
             #BALL
             #window.blit(get_green_flag(), (x,y))
             window.blit(get_basic_road(), (x,y))
-        elif sprite == '3':
+        elif sprite == self.mega_ball:
             window.blit(get_basic_road(), (x,y))
             #BALL
             #window.blit(get_green_flag(), (x,y))
-        elif sprite == '4':
+        elif sprite == self.enemy_spawn:
             #enemy spawn
             window.blit(get_basic_road(), (x,y))
-        elif sprite == '1':
+        elif sprite == self.wall:
             window.blit(get_basic_wall(), (x,y))
 
     def is_wall(self, x, y) -> bool:
@@ -44,7 +53,7 @@ class WorldPacMan(World):
         if y > self.y or y < 0:
             return True
         
-        if self.structure[y][x] == '1' or self.structure[y][x] == '4':
+        if self.structure[y][x] == self.wall or self.structure[y][x] == self.enemy_spawn:
             return True
         
         return False

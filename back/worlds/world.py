@@ -8,7 +8,12 @@ class World:
     def __init__(self, data:str) -> None:
         self.agent_spawn_x = 0
         self.agent_spawn_y = 0
+        
+        self.ground = '0'
+        self.wall = '1'
         self.spawn_number = '2'
+        self.green_flag = '3'
+        self.red_flag = '4'
         
         self.structure = self.get_structure(data)
         self.x = len(self.structure[0]) -1
@@ -19,15 +24,15 @@ class World:
         
         x = pos_x * sprite_size
         y = pos_y * sprite_size
-        if sprite == '0' or sprite == '2':
+        if sprite == self.ground or sprite == self.spawn_number:
             window.blit(get_basic_road(), (x,y))
-        elif sprite == '3':
+        elif sprite == self.green_flag:
             window.blit(get_basic_road(), (x,y))
             window.blit(get_green_flag(), (x,y))
-        elif sprite == '4':
+        elif sprite == self.red_flag:
             window.blit(get_basic_road(), (x,y))
             window.blit(get_red_flag(), (x,y))
-        elif sprite == '1':
+        elif sprite == self.wall:
             window.blit(get_basic_wall(), (x,y))
             
     def display(self, window:pygame.Surface) -> None:
@@ -52,7 +57,17 @@ class World:
         if y > self.y or y < 0:
             return True
         
-        if self.structure[y][x] == 1:
+        if self.structure[y][x] == self.wall:
             return True
         
         return False
+    
+    def is_green_flag(self, x, y) -> bool:
+        if self.structure[y][x] == self.green_flag:
+            return True
+        False
+    
+    def is_red_flag(self, x, y) -> bool:
+        if self.structure[y][x] == self.red_flag:
+            return True
+        False
