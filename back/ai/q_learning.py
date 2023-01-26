@@ -3,6 +3,7 @@ import time
 from tqdm import tqdm
 import uuid
 
+from ..games import Game
 from ..services import FileManager
 
 class Model:
@@ -25,8 +26,8 @@ class QLearning:
     def __init__(self) -> None:
         self.type_algo = "q_learning"
         
-    def train(self, game, alpha:float, gamma:float, epsilon:float, max_iterations:int, epochs:int, 
-              visible:bool=False) -> Model:    
+    def train(self, game:Game, alpha:float, gamma:float, epsilon:float, max_iterations:int, epochs:int, 
+              visible:bool=False, debug:bool=False) -> Model:    
         try:
             num_actions = game.get_num_actions()
             num_states = game.get_num_states()
@@ -36,8 +37,8 @@ class QLearning:
             for e in tqdm(range(epochs)):
                 i = 0
                 break_down = False
-                game.run(visible, asynchrone=True)
-                time.sleep(game.clock.tick(30)/100) 
+                game.run(visible)
+                time.sleep(0.3) 
                 while i < max_iterations and break_down == False:
                     current_state = game.get_state()
                     
@@ -50,7 +51,7 @@ class QLearning:
                     # Exécuter l'action choisie et observer la récompense et le prochain état
                    
                     game.action(action)
-                    reward = game.get_reward()
+                    reward = game.get_reward(e)
                     next_state = game.get_state()
                     
                     # Mettre à jour la table Q
@@ -58,27 +59,28 @@ class QLearning:
                     
                     # Vérifier si l'agent a gagné ou perdu
                     if game.status == "victory":
-                        #print("L'agent a gagné après", i, "itérations! pos x: ", game.agent.x,  " pos y: ", game.agent.y)
+                        if debug:
+                            print("L'agent a gagné après", i, "itérations! pos x: ", game.agent.x,  " pos y: ", game.agent.y)
                         break_down = True
                     elif game.status == "defeat":
-                        #print("L'agent a perdu après", i,  "itérations! pos x: ", game.agent.x,  " pos y: ", game.agent.y)
+                        if debug:
+                            print("L'agent a perdu après", i,  "itérations! pos x: ", game.agent.x,  " pos y: ", game.agent.y)
                         break_down = True
                     i += 1
-                
-                game.reset()
+                game.stop()
                 #print(i, break_down, e)             
             return Model(type_algo=self.type_algo, env=game.env, model=Q)
         except Exception as ex:
             print(ex)
-            game.reset()
         
-    def use(self, game, model:Model, visible:bool=False) -> None:
-        game.run(visible, asynchrone=True)
+    def use(self, game:Game, model:Model, visible:bool=False) -> None:
+        game.run(visible, no_event=False)
         
         while game.status == "play":
-            time.sleep(3)
+            time.sleep(1)
             state = game.get_state()
             action = np.argmax(model.model[state])
             game.action(action)
+            print(game.status)
         game.stop()
             

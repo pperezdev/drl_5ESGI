@@ -5,10 +5,8 @@ from ..factories import *
 import pygame
 from pygame.locals import *
 import os
-
-import asyncio
+import signal
 import threading
-import sys
 
 class Game:
     def __init__(self, world:World, agent:Agent) -> None:
@@ -17,6 +15,7 @@ class Game:
         self.status = "stop"
         self.score = 0
         self.env = world.env
+        self.visible = True
         
     def get_num_actions(self) -> int:
         return self.world.get_num_actions()
@@ -24,8 +23,14 @@ class Game:
     def get_num_states(self) -> int:
         return self.world.get_num_states()
     
-    def get_reward(self) -> int:
-        return (self.agent.x - self.world.green_flag_x) + (self.agent.y - self.world.green_flag_y)
+    def get_reward(self, epoch) -> int:
+        reward = 0
+        if self.status == "victory":
+            reward = 100
+        if self.status == "defeat":
+            reward = -100
+        reward_tt = (self.agent.x - self.world.green_flag_x) + (self.agent.y - self.world.green_flag_y) + reward - epoch
+        return reward_tt
     
     def get_state(self) -> int: 
         val = self.agent.x + (self.agent.y * self.world.y)
@@ -33,8 +38,10 @@ class Game:
     
     def move(self, ud:int, rl:int) -> None:
         self.status = self.agent.move(ud, rl, self.world)
-        self.display(self.window)
-        pygame.display.flip()
+        if self.visible:
+            self.display(self.window)
+            pygame.display.flip()
+            pygame.display.update()
     
     def action(self, val:int) -> str:
         if val == 0:
@@ -58,29 +65,27 @@ class Game:
     def right(self) -> None:
         self.move(0,1)
         
-    def run(self, visible:bool=True, asynchrone:bool=False) -> None:
-        pygame.init()    
+    def run(self, visible:bool=True, no_event:bool=True) -> None:
+        self.reset()   
         is_visible = pygame.HIDDEN
-        
+        self.visible = visible
         if visible:
+            pygame.init() 
             is_visible =pygame.SHOWN
+            
+            self.window = pygame.display.set_mode((1920, 1080), flags=is_visible)
+            self.clock = pygame.time.Clock()
+            
+            self.window.fill((0, 0, 0))
+            self.display_first(self.window)
+                
+            pygame.display.flip()
+            self.status = "play"
+            if no_event:
+                self.__run__()
+                self.stop()
         else:
             os.environ["SDL_VIDEODRIVER"] = "dummy"
-            
-        self.window = pygame.display.set_mode((1920, 1080), flags=is_visible)
-        self.clock = pygame.time.Clock()
-        
-        self.window .fill((0, 0, 0))
-        self.display_first(self.window)
-              
-        pygame.display.flip()
-        
-        if asynchrone:
-            self.thread = threading.Thread(target=self.__run__)
-            self.thread.start()
-        else:
-            self.__run__()
-            self.stop()
     
     def reset(self) -> None:
         self.world.reset()
@@ -88,22 +93,18 @@ class Game:
         self.stop()
         
     def stop(self) -> None:
-        self.is_running = False
+        self.status = "stop"
         pygame.quit()
         
     def __run__(self) -> None:
-        self.is_running = True
-        self.status = "play"
-        while self.is_running:
+        while self.status == "play":
             self.clock.tick(30)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.status = "stop"
-                    self.is_running = False
                 elif event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
                         self.status = "stop"
-                        self.is_running = False
                     elif event.key == K_RIGHT:
                         self.status = self.agent.move(0,1,self.world)
                         self.display(self.window )
