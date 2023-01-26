@@ -10,7 +10,7 @@ class WorldPacMan(World):
         self.agent_spawn_x = 0
         self.agent_spawn_y = 0
         
-        self.num_states = 4
+        self.num_actions = 4
         
         self.ground = '0'
         self.wall = '1'

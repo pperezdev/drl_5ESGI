@@ -5,7 +5,7 @@ import pygame
 
 
 class World:
-    def __init__(self, data:str, num_states:int=2, *agrs, **kwargs) -> None:
+    def __init__(self, data:str, num_actions:int=2, *agrs, **kwargs) -> None:
         self.agent_spawn_x = 0
         self.agent_spawn_y = 0
         
@@ -15,7 +15,7 @@ class World:
         self.red_flag_x = 0
         self.red_flag_y = 0
         
-        self.num_states = num_states
+        self.num_actions = num_actions
         
         self.ground = '0'
         self.wall = '1'
@@ -28,8 +28,11 @@ class World:
         self.y = len(self.structure) -1
         
     
+    def get_num_actions(self):
+        return self.num_actions
+    
     def get_num_states(self):
-        return self.num_states
+        return self.x * self.y
     
     def render(self, window:pygame.Surface, pos_x:int, pos_y:int):
         sprite = self.structure[pos_y][pos_x]

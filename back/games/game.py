@@ -15,6 +15,9 @@ class Game:
         self.agent = agent
         self.status = "stop"
         self.score = 0
+        
+    def get_num_actions(self) -> int:
+        return self.world.get_num_actions()
     
     def get_num_states(self) -> int:
         return self.world.get_num_states()

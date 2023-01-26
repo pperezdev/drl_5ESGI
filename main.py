@@ -15,5 +15,6 @@ alpha = 0.1 # taux d'apprentissage
 gamma = 0.9 # facteur de réduction
 epsilon = 0.1 # taux d'exploration
 max_iterations = 1000 # nombre maximum d'itérations
+epochs = 50
 
-ql.train(game, alpha=alpha, gamma=gamma, epsilon=epsilon, max_iterations=max_iterations)
+ql.train(game, alpha=alpha, gamma=gamma, epsilon=epsilon, max_iterations=max_iterations, epochs=epochs)
