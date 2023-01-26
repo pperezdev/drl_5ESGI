@@ -1,1 +1,2 @@
-from .q_learning import QLearning, Model
+from .q_learning import QLearning
+from .model import Model
