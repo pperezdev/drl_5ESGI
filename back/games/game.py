@@ -32,7 +32,12 @@ class Game:
         reward_tt = (self.agent.x - self.world.green_flag_x) + (self.agent.y - self.world.green_flag_y) + reward - epoch
         return reward_tt
     
+    def step(self):
+        #regrouper les fonction action, get rewards et get_state
+        pass
+    
     def get_state(self) -> int: 
+        #renvoyer l'environnement avec l'emplacement de chaque perso !!!!
         val = self.agent.x + (self.agent.y * self.world.y)
         return  val
     

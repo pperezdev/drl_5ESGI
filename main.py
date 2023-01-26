@@ -1,4 +1,4 @@
-from back import facades, QLearning, Model
+from back import facades, QLearning, ModelQLearning
 
 #game = facades.line_world_1x5()
 game = facades.grid_world_5x5()
@@ -7,6 +7,6 @@ game = facades.grid_world_5x5()
 
 ql = QLearning()
 
-model = Model()
+model = ModelQLearning()
 model.load("model_gw_q_learning_c9830ef8-9db1-11ed-a00a-a8a1598f10d9")
 ql.use(game, model, visible=True)

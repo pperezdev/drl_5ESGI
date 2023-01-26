@@ -1,7 +1,7 @@
 import numpy as np
 import time
 from tqdm import tqdm
-from .model import Model
+from .model import ModelQLearning
 
 from ..games import Game
 
@@ -10,7 +10,7 @@ class QLearning:
         self.type_algo = "q_learning"
         
     def train(self, game:Game, alpha:float, gamma:float, epsilon:float, max_iterations:int, epochs:int, 
-              visible:bool=False, debug:bool=False) -> Model:    
+              visible:bool=False, debug:bool=False) -> ModelQLearning:    
         try:
             num_actions = game.get_num_actions()
             num_states = game.get_num_states()
@@ -32,7 +32,6 @@ class QLearning:
                         
                     
                     # Exécuter l'action choisie et observer la récompense et le prochain état
-                   
                     game.action(action)
                     reward = game.get_reward(e)
                     next_state = game.get_state()
@@ -51,12 +50,12 @@ class QLearning:
                         break_down = True
                     i += 1
                 game.stop()
-                #print(i, break_down, e)             
-            return Model(type_algo=self.type_algo, env=game.env, model=Q)
+                             
+            return ModelQLearning(type_algo=self.type_algo, env=game.env, model=Q)
         except Exception as ex:
             print(ex)
         
-    def use(self, game:Game, model:Model, visible:bool=False) -> None:
+    def use(self, game:Game, model:ModelQLearning, visible:bool=False) -> None:
         game.run(visible, no_event=False)
         
         while game.status == "play":

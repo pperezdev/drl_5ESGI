@@ -1,9 +1,8 @@
 from ..services import FileManager
-import numpy as np
 import uuid
 
-class Model:
-    def __init__(self, type_algo:str=None, env:str=None, model:np.ndarray=None):
+class ModelQLearning:
+    def __init__(self, type_algo:str=None, env:str=None, model=None):
         self.type_algo = type_algo
         self.env = env
         self.model = model
