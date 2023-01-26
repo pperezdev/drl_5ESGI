@@ -7,6 +7,7 @@ import pygame
 
 class WorldPacMan(World):
     def __init__(self, data:str, *agrs, **kwargs) -> None:
+        self.env = "pc"
         self.agent_spawn_x = 0
         self.agent_spawn_y = 0
         

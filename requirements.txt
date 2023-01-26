@@ -1,3 +1,5 @@
 pygame
 numpy
 tqdm
+notebook
+pickle

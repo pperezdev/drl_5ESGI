@@ -5,6 +5,11 @@
 - Antoine DUBOIS
 - Pierrick PEREZ
 - Quentin PIERSON
+  
+## Get in started
+```sh
+pip install -r requirements.txt
+```
 
 ## Comment l'utiliser
 
@@ -68,4 +73,4 @@ game.stop()
 - Cant Stop
 
 ### Algo
-
+- Q Learning

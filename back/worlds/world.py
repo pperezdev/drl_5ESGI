@@ -5,7 +5,8 @@ import pygame
 
 
 class World:
-    def __init__(self, data:str, num_actions:int=2, *agrs, **kwargs) -> None:
+    def __init__(self, data:str, env:str, num_actions:int=2, *agrs, **kwargs) -> None:
+        self.env = env
         self.agent_spawn_x = 0
         self.agent_spawn_y = 0
         
@@ -26,13 +27,15 @@ class World:
         self.structure = self.get_structure(data)
         self.x = len(self.structure[0]) -1
         self.y = len(self.structure) -1
-        
+    
+    def reset(self):
+        pass
     
     def get_num_actions(self):
         return self.num_actions
     
     def get_num_states(self):
-        return self.x * self.y
+        return (self.x+1) * (self.y+1)
     
     def render(self, window:pygame.Surface, pos_x:int, pos_y:int):
         sprite = self.structure[pos_y][pos_x]

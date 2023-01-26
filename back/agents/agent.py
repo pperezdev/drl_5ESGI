@@ -9,6 +9,12 @@ class Agent:
         self.x = x
         self.y = y
         self.sprite_fct = sprite_fct
+        
+    def reset(self, x, y) -> None:
+        self.old_x = x
+        self.old_y = y
+        self.x = x
+        self.y = y
     
     def can_move(self, direction_x:int, direction_y:int, world:World) -> bool:
         return not world.is_wall(direction_x, direction_y)
