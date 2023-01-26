@@ -6,9 +6,11 @@ import pygame
 
 
 class WorldPacMan(World):
-    def __init__(self, data:str) -> None:
+    def __init__(self, data:str, *agrs, **kwargs) -> None:
         self.agent_spawn_x = 0
         self.agent_spawn_y = 0
+        
+        self.num_states = 4
         
         self.ground = '0'
         self.wall = '1'

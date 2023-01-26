@@ -5,9 +5,17 @@ import pygame
 
 
 class World:
-    def __init__(self, data:str) -> None:
+    def __init__(self, data:str, num_states:int=2, *agrs, **kwargs) -> None:
         self.agent_spawn_x = 0
         self.agent_spawn_y = 0
+        
+        self.green_flag_x = 0
+        self.green_flag_y = 0
+        
+        self.red_flag_x = 0
+        self.red_flag_y = 0
+        
+        self.num_states = num_states
         
         self.ground = '0'
         self.wall = '1'
@@ -18,6 +26,10 @@ class World:
         self.structure = self.get_structure(data)
         self.x = len(self.structure[0]) -1
         self.y = len(self.structure) -1
+        
+    
+    def get_num_states(self):
+        return self.num_states
     
     def render(self, window:pygame.Surface, pos_x:int, pos_y:int):
         sprite = self.structure[pos_y][pos_x]
@@ -47,6 +59,14 @@ class World:
                 if square == self.spawn_number:
                     self.agent_spawn_x = j
                     self.agent_spawn_y = i
+                    
+                if square == self.green_flag:
+                    self.green_flag_x = j
+                    self.green_flag_y = i
+                    
+                if square == self.red_flag:
+                    self.red_flag_x = j
+                    self.red_flag_y = i
             structure.append(line)
         return structure
 

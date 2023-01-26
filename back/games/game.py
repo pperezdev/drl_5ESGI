@@ -16,11 +16,30 @@ class Game:
         self.status = "stop"
         self.score = 0
     
+    def get_num_states(self) -> int:
+        return self.world.get_num_states()
+    
+    def get_reward(self) -> int:
+        return self.agent.x - self.world.green_flag_x
+    
+    def get_state(self) -> int: 
+        return self.agent.x
+    
     def move(self, ud:int, rl:int) -> None:
         self.status = self.agent.move(ud, rl, self.world)
         self.display(self.window)
         pygame.display.flip()
-        
+    
+    def action(self, val:int) -> None:
+        if val == 0:
+            game.left()
+        elif val == 1:
+            game.right()
+        elif val == 2:
+            game.up()
+        else:
+            game.down()
+    
     def up(self) -> None:
         self.move(-1,0)
     
