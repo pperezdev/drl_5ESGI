@@ -31,6 +31,16 @@ class World:
     def reset(self):
         pass
     
+    def get_state(self):
+        structure = []
+        for i in self.structure:
+            for j in i:
+                k = j
+                if j == '2':
+                    k = '0'
+                structure.append(int(k))
+        return structure
+    
     def get_num_actions(self):
         return self.num_actions
     

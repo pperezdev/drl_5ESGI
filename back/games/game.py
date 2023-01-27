@@ -23,22 +23,34 @@ class Game:
     def get_num_states(self) -> int:
         return self.world.get_num_states()
     
-    def get_reward(self, epoch) -> int:
+    def get_reward(self, iterration:int) -> int:
         reward = 0
         if self.status == "victory":
             reward = 100
         if self.status == "defeat":
             reward = -100
-        reward_tt = (self.agent.x - self.world.green_flag_x) + (self.agent.y - self.world.green_flag_y) + reward - epoch
+        reward_tt = (self.agent.x - self.world.green_flag_x) + (self.agent.y - self.world.green_flag_y) + reward - iterration
         return reward_tt
     
-    def step(self):
+    def step(self, action:int, iterration:int, type_state:bool=False):
         #regrouper les fonction action, get rewards et get_state
-        pass
+        self.action(action)
+        reward = self.get_reward(iterration)
+        if type_state:
+            next_state = self.get_state()
+        else:
+            next_state = self.get_state_position_agent()
+            
+        return next_state, reward, self.status
     
-    def get_state(self) -> int: 
-        #renvoyer l'environnement avec l'emplacement de chaque perso !!!!
+    def get_state_position_agent(self) -> int: 
         val = self.agent.x + (self.agent.y * self.world.y)
+        return val
+    
+    def get_state(self): 
+        val = self.world.get_state()
+        agent_pos = self.get_state_position_agent()
+        val[agent_pos] = 5
         return  val
     
     def move(self, ud:int, rl:int) -> None:
@@ -112,19 +124,19 @@ class Game:
                         self.status = "stop"
                     elif event.key == K_RIGHT:
                         self.status = self.agent.move(0,1,self.world)
-                        self.display(self.window )
+                        self.display(self.window)
                         pygame.display.flip()
                     elif event.key == K_LEFT:
                         self.status = self.agent.move(0,-1,self.world)
-                        self.display(self.window )
+                        self.display(self.window)
                         pygame.display.flip()
                     elif event.key == K_UP:
                         self.status = self.agent.move(-1,0,self.world)
-                        self.display(self.window )
+                        self.display(self.window)
                         pygame.display.flip()
                     elif event.key == K_DOWN:
                         self.status = self.agent.move(1,0,self.world)
-                        self.display(self.window )
+                        self.display(self.window)
                         pygame.display.flip()
             pygame.display.update()
         

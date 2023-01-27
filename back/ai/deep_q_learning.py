@@ -43,25 +43,27 @@ class DeepQLearning:
             break_down = False
             i = 0
             state = game.get_state()
+            state = np.reshape(state, [1, num_states])
             
             while i < max_iterations and break_down == False:
                 action = self.epsilon_greedy(state, epsilon, model, num_actions)
                 
-                game.action(action)
-                reward = game.get_reward(e)
-                next_state = game.get_state()
+                next_state, reward, status = game.step(action, i, type_state=True)
+                next_state = np.reshape(next_state, [1, num_states])
 
                 target = reward
                 if not break_down:
-                    print(model.predict(next_state))
                     target = reward + gamma * np.amax(model.predict(next_state)[0])
                 target_f = model.predict(state)
                 target_f[0][action] = target
                 model.fit(state, target_f, epochs=1, verbose=0)
                 
                 state = next_state
-                if game.status == "victory" or game.status == "defeat":
+                if status == "victory" or status == "defeat":
+                    if debug:
+                        print(status, i, "itérations! pos x:", game.agent.x,  "pos y:", game.agent.y, "reward:", reward)
                     break_down = True
+                i += 1
             game.stop()
         return ModelQLearning(self.type_algo, env=game.env, model=model)
             
@@ -72,6 +74,7 @@ class DeepQLearning:
             time.sleep(1)
             state = game.get_state()
             action = np.argmax(model.model[state])
+
             game.action(action)
             print(game.status)
         game.stop()
