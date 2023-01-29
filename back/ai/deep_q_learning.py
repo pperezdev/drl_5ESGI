@@ -4,6 +4,8 @@ from keras.layers import Dense, Input
 from keras.optimizers import Adam
 import random
 
+import tensorflow as tf
+
 from .model import ModelQLearning
 
 import time
@@ -54,7 +56,7 @@ class DeepQLearning:
                 target = reward
                 if not break_down:
                     target = reward + gamma * np.amax(model.predict(next_state)[0])
-                target_f = model.predict(state)
+                target_f = model.predict(state, verbose=0)
                 target_f[0][action] = target
                 model.fit(state, target_f, epochs=1, verbose=0)
                 
@@ -65,16 +67,18 @@ class DeepQLearning:
                     break_down = True
                 i += 1
             game.stop()
-        return ModelQLearning(self.type_algo, env=game.env, model=model)
+        return ModelQLearning(self.type_algo, env=game.env, model=model, is_keras=True)
             
     def use(self, game:Game, model:ModelQLearning, visible:bool=False) -> None:
         game.run(visible, no_event=False)
-        
+        num_states = game.get_num_states()
         while game.status == "play":
             time.sleep(1)
-            state = game.get_state()
-            action = np.argmax(model.model[state])
-
+            
+            next_state = game.get_state()
+            next_state = np.reshape(next_state, [1, num_states])
+            predictions = model.model.predict(next_state)
+            action = np.argmax(predictions)
             game.action(action)
             print(game.status)
         game.stop()
