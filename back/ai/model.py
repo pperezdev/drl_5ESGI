@@ -1,7 +1,7 @@
 from ..services import FileManager
 import uuid
 import tensorflow as tf
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 from keras.layers import Dense, Input
 from keras.optimizers import Adam
 
@@ -18,7 +18,7 @@ class ModelQLearning:
         fm.save_model(path, self.model)
         
     def keras_save(self, path:str):
-        self.model.save(f"models/{path}")
+        self.model.save(f"models/{path}.h5")
         
     def save(self, path:str=None):
         if path == None:
@@ -34,8 +34,8 @@ class ModelQLearning:
         
     def load(self, path:str):
         if self.is_keras:
-            self.model = tf.keras.models.load_model(f"models/{path}")
+            self.model = load_model(f"models/{path}.h5")
+            print(dir(self.model))
         else:
             fm = FileManager()
-            self.model = fm.load_model(path)
-        
+            self.model = fm.load_model(path)        

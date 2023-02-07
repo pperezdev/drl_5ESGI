@@ -16,8 +16,8 @@ game = facades.grid_world_5x5()
 ql = DeepQLearning()
 
 gamma = 0.99
-epsilon = 0.01
-learning_rate = 0.001
+epsilon = 0.1
+learning_rate = 0.0001
 max_iterations = 1000
 epochs = 20
 
@@ -28,5 +28,5 @@ epochs = 20
 #model.save()
 
 model = ModelQLearning(is_keras=True)
-model.load("model_gw_dqn_cd368600-9ff5-11ed-8afc-12d9bc286a40")
+model.load("model_gw_dqn_037a5175-a6fe-11ed-82da-a8a1598f10d9")
 ql.use(game, model, visible=True)
