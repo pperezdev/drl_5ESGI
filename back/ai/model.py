@@ -35,7 +35,6 @@ class ModelQLearning:
     def load(self, path:str):
         if self.is_keras:
             self.model = load_model(f"models/{path}.h5")
-            print(dir(self.model))
         else:
             fm = FileManager()
             self.model = fm.load_model(path)        
