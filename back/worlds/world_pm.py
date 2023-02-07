@@ -49,7 +49,7 @@ class WorldPacMan(World):
         elif sprite == self.wall:
             window.blit(get_basic_wall(), (x,y))
 
-    def is_wall(self, x, y) -> bool:
+    def is_wall(self, x, y) -> bool:           
         if x > self.x or x < 0:
             return True
         

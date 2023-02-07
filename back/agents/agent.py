@@ -1,6 +1,7 @@
 from ..worlds import World
 from ..constant import *
 import pygame
+from ..vector2 import Vector2
 
 class Agent:
     def __init__(self, x:int, y:int, sprite_fct) -> None:
@@ -9,7 +10,10 @@ class Agent:
         self.x = x
         self.y = y
         self.sprite_fct = sprite_fct
-        
+    
+    def pos(self) -> Vector2:
+        return Vector2(self.x, self.y)
+    
     def reset(self, x, y) -> None:
         self.old_x = x
         self.old_y = y
