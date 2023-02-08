@@ -85,7 +85,7 @@ class World:
                     self.red_flag_y = i
             structure.append(line)
         return structure
-
+        
     def is_wall(self, x, y) -> bool:
         if x > self.x or x < 0:
             return True

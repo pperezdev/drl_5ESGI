@@ -60,3 +60,7 @@ class WorldPacMan(World):
             return True
         
         return False
+    
+    def is_spawn(self, x:int, y:int) -> bool:
+        return self.structure[y][x] == self.enemy_spawn
+        
