@@ -32,23 +32,30 @@ class DoubleDeepQLearning:
         act_values = model.predict(state)
         return np.argmax(act_values[0]) 
     
-    def train(self, game:Game, gamma:float, epsilon:float, 
-              learning_rate:float, max_iterations:int, epochs:int, 
-              visible:bool=False, debug:bool=False) -> ModelQLearning:
+    def train(
+        self, 
+        game:Game, 
+        gamma:float,
+        alpha:float,
+        epsilon:float, 
+        learning_rate:float, 
+        max_iterations:int, 
+        epochs:int, 
+        visible:bool=False, 
+        debug:bool=False
+    ) -> ModelQLearning:
+
         num_actions = game.get_num_actions()
         num_states = game.get_num_states()
         
         Q_qnet = self.__build_model(learning_rate, num_actions, num_states)
         Q_tnet = self.__build_model(learning_rate, num_actions, num_states)
+
+        optimizer = tf.keras.optimizers.SGD(alpha)
         
         state = game.get_state()
         state = np.reshape(state, [1, num_states])
 
-        # #######################
-        # [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4]
-        # #######################
-        # [[3 0 0 0 0 0 0 0 0 0 0 5 0 0 0 0 0 0 0 0 0 0 0 0 4]]
-        
         for e in tqdm(range(epochs)):
             game.run(visible)
             break_down = False
@@ -57,17 +64,23 @@ class DoubleDeepQLearning:
             state = np.reshape(state, [1, num_states])
             
             while i < max_iterations and break_down == False:
-                action = self.epsilon_greedy(state, epsilon, Q_qnet, num_actions)
+                optimal_action = self.epsilon_greedy(state, epsilon, Q_qnet, num_actions)
                 
-                next_state, reward, status = game.step(action, i, type_state=True)
+                next_state, reward, status = game.step(optimal_action, i, type_state=True)
                 next_state = np.reshape(next_state, [1, num_states])
 
                 target = reward
                 if not break_down:
-                    target = reward + gamma * np.amax(Q_qnet.predict(next_state)[0])
+                    target = reward + gamma * np.amax(Q_tnet.predict(next_state)[0])
                 target_f = Q_tnet.predict(state, verbose=0)
-                target_f[0][action] = target
-                Q_qnet.fit(state, target_f, epochs=1, verbose=0)
+                target_f[0][optimal_action] = target
+                Q_tnet.fit(state, target_f, epochs=1, verbose=0)
+
+                # with tf.GradientTape() as tape:
+                #     loss = tf.reduce_mean((target - Q_qnet) ** 2)
+                
+                # grads = tape.gradient(loss, Q_qnet.trainable_variables)
+                # optimizer.apply_gradients(zip(grads, Q_tnet.trainable_variables))
                 
                 state = next_state
                 if status == "victory" or status == "defeat":
@@ -76,7 +89,7 @@ class DoubleDeepQLearning:
                     break_down = True
                 i += 1
             game.stop()
-        return ModelQLearning(self.type_algo, env=game.env, model=model, is_keras=True)    
+        return ModelQLearning(self.type_algo, env=game.env, model=Q_tnet, is_keras=True)    
     
     def use(self, game:Game, model:ModelQLearning, visible:bool=False) -> None:
         game.run(visible, no_event=False)
