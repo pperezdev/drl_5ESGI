@@ -1,8 +1,9 @@
 from back import facades, QLearning, ModelQLearning, DeepQLearning
 
 #game = facades.line_world_1x5()
-game = facades.grid_world_5x5()
+game = facades.pacman()
 
+game.run()
 #game.run()
 
 #ql = DeepQLearning()
@@ -27,6 +28,6 @@ epochs = 20
 #model = ql.train(game, alpha=alpha, gamma=gamma, epsilon=epsilon, max_iterations=max_iterations, epochs=epochs, debug=True)
 #model.save()
 
-model = ModelQLearning(is_keras=True)
-model.load("model_gw_dqn_037a5175-a6fe-11ed-82da-a8a1598f10d9")
-ql.use(game, model, visible=True)
+#model = ModelQLearning(is_keras=True)
+#model.load("model_gw_dqn_037a5175-a6fe-11ed-82da-a8a1598f10d9")
+#ql.use(game, model, visible=True)

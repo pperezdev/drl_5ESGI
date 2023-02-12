@@ -1,9 +1,8 @@
 from ..agents import AgentPacman
-from .ghost import Ghost
 from ..vector2 import Vector2
 
 class Chase:
-    def chase(self, agent:AgentPacman, ghost:Ghost) -> Vector2:
+    def chase(self, agent:AgentPacman, ghost) -> Vector2:
         return Vector2(0,0)
     
 class ChaseRandom(Chase):
@@ -11,14 +10,14 @@ class ChaseRandom(Chase):
         super().__init__()
         self.target = Vector2(36, 0)
         
-    def chase(self, agent:AgentPacman, ghost:Ghost) -> Vector2:
+    def chase(self, agent:AgentPacman, ghost) -> Vector2:
         dist = Vector2.distance(ghost.blinky.pos(), agent.pos())
         if dist > 8 :
             return agent.pos()
         return self.target 
 
 class ChasePatrol(Chase):
-    def chase(self, agent:AgentPacman, ghost:Ghost) -> Vector2:
+    def chase(self, agent:AgentPacman, ghost) -> Vector2:
         pos = ghost.pos()
         pos2 = agent.get_direction_two()
 
@@ -27,10 +26,9 @@ class ChasePatrol(Chase):
         return Vector2(x, y)
 
 class ChaseAmbush(Chase):
-    def chase(self, agent:AgentPacman, ghost:Ghost) -> Vector2:
+    def chase(self, agent:AgentPacman, ghost) -> Vector2:
         direction_hex = agent.get_direction_hex()
         pos_hex = agent.get_position_hex()
-            
         direction = int(direction_hex)
         pos = int(pos_hex)
 
@@ -45,5 +43,5 @@ class ChaseAmbush(Chase):
         return target
 
 class ChaseAggressive(Chase):
-    def chase(self, agent:AgentPacman, ghost:Ghost) -> Vector2:
+    def chase(self, agent:AgentPacman, ghost) -> Vector2:
         return agent.pos()

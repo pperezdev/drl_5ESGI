@@ -1,3 +1,7 @@
 __pycache__
 .idea/
+<<<<<<< HEAD
 test.py
+=======
+.DS_Store
+>>>>>>> 6da4057dec953f80035a8dba9630e51e409a5f31

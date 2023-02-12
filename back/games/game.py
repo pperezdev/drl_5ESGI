@@ -5,8 +5,7 @@ from ..factories import *
 import pygame
 from pygame.locals import *
 import os
-import signal
-import threading
+
 
 class Game:
     def __init__(self, world:World, agent:Agent) -> None:
