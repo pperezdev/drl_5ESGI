@@ -32,9 +32,9 @@ class ModelQLearning:
         fm = FileManager()
         fm.save_model(path, self.model)
         
-    def load(self, path:str):
+    def load(self, path:str, end_path:str="h5"):
         if self.is_keras:
-            self.model = load_model(f"models/{path}.h5")
+            self.model = load_model(f"models/{path}.{end_path}")
         else:
             fm = FileManager()
             self.model = fm.load_model(path)        

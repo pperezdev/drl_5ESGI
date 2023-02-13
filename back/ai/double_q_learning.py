@@ -76,12 +76,6 @@ class DoubleDeepQLearning:
                 target_f[0][optimal_action] = target
                 Q_tnet.fit(state, target_f, epochs=1, verbose=0)
 
-                # with tf.GradientTape() as tape:
-                #     loss = tf.reduce_mean((target - Q_qnet) ** 2)
-                
-                # grads = tape.gradient(loss, Q_qnet.trainable_variables)
-                # optimizer.apply_gradients(zip(grads, Q_tnet.trainable_variables))
-                
                 state = next_state
                 if status == "victory" or status == "defeat":
                     if debug:
