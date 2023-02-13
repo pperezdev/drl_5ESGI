@@ -2,7 +2,8 @@ import time
 
 import numpy as np
 
-from back import ModelQLearning, Game
+from .model import ModelQLearning
+from ..games import Game
 
 
 class AlgoRandom:
