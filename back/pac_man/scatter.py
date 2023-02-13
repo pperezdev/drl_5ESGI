@@ -9,16 +9,16 @@ class Scatter:
 
 class ScatterBottomLeftCorner(Scatter):
      def __init__(self) -> None:
-        super().__init__(Vector2(36, 0))
+        super().__init__(Vector2(0, 36))
         
 class ScatterBottomRightCorner(Scatter):
      def __init__(self) -> None:
-        super().__init__(Vector2(36, 27))
+        super().__init__(Vector2(27, 36))
         
 class ScatterTopLeftCorner(Scatter):
      def __init__(self) -> None:
-        super().__init__(Vector2(0, 2))
+        super().__init__(Vector2(2, 0))
         
 class ScatterTopRightCorner(Scatter):
      def __init__(self) -> None:
-        super().__init__(Vector2(0, 25))
+        super().__init__(Vector2(25, 0))

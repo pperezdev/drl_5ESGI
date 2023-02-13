@@ -44,14 +44,15 @@ class Ghost:
         vD = Vector2(self.x  + 1, self.y)
         vR = Vector2(self.x , self.y + 1)
         
-        if vL.x == 18 or vR.x == 18: 
-            if vR.y == 28 and self.last_movement == MovementType.LEFT:
-                self.x = 18
-                self.y = 0
+        if vL.y == 18 or vR.y == 18: 
+            
+            if vR.x == 28 and self.last_movement == MovementType.LEFT:
+                self.x = 0
+                self.y = 18
 
-            if vL.y == -1 and self.last_movement == MovementType.RIGHT:
-                self.x = 18
-                self.y = 27
+            if vL.x == -1 and self.last_movement == MovementType.RIGHT:
+                self.x = 27
+                self.y = 18
         
         if world.is_wall(vR.x, vR.y) or self.last_movement == MovementType.RIGHT: 
             number -= int(MovementType.RIGHT._value_)

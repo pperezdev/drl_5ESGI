@@ -49,16 +49,15 @@ class WorldPacMan(World):
         elif sprite == self.wall:
             window.blit(get_basic_wall(), (x,y))
 
-    def is_wall(self, x, y) -> bool:           
+    def is_wall(self, x, y) -> bool:          
         if x > self.x or x < 0:
-            return True
+            return False
         
         if y > self.y or y < 0:
             return True
         
         if self.structure[y][x] == self.wall or self.structure[y][x] == self.enemy_spawn:
             return True
-        
         return False
     
     def is_spawn(self, x:int, y:int) -> bool:

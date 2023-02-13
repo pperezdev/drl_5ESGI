@@ -11,7 +11,7 @@ class ChaseRandom(Chase):
         self.target = Vector2(36, 0)
         
     def chase(self, agent:AgentPacman, ghost) -> Vector2:
-        dist = Vector2.distance(ghost.blinky.pos(), agent.pos())
+        dist = Vector2.distance(None,ghost.blinky.pos(), agent.pos())
         if dist > 8 :
             return agent.pos()
         return self.target 
@@ -29,14 +29,14 @@ class ChaseAmbush(Chase):
     def chase(self, agent:AgentPacman, ghost) -> Vector2:
         direction_hex = agent.get_direction_hex()
         pos_hex = agent.get_position_hex()
-        direction = int(direction_hex)
-        pos = int(pos_hex)
+
+        direction = int(direction_hex, 16)
+        pos = int(pos_hex, 16)
 
         target_global = pos + direction
+        target_hex = target_global.to_bytes(2, byteorder='big').hex()
 
-        target_hex = hex(target_global)
-            
-        x = int(target_hex[2:2], 16) - 29
+        x = int(target_hex[2:4], 16) - 29
         y = (int(target_hex[0:2], 16) - 59)*-1
         target = Vector2(x, y)
 

@@ -11,10 +11,26 @@ from .game import Game
 
 class GamePacMan(Game):
 
-    def __init__(self, world: WorldPacMan, agent: Agent, ghost_list:GhostList) -> None:
+    def __init__(self, world: WorldPacMan, agent: AgentPacman, ghost_list:GhostList) -> None:
         super().__init__(world, agent)
         self.timer = 0
         self.ghost_list = ghost_list
+        
+    def up(self) -> None:
+        self.agent.hex_movement = self.agent.HEX_MOVEMENT_UP
+        self.move(-1,0)
+    
+    def down(self) -> None:
+        self.agent.hex_movement = self.agent.HEX_MOVEMENT_DOWN
+        self.move(1,0)
+        
+    def left(self) -> None:
+        self.agent.hex_movement = self.agent.HEX_MOVEMENT_LEFT
+        self.move(0,-1)
+        
+    def right(self) -> None:
+        self.agent.hex_movement = self.agent.HEX_MOVEMENT_RIGHT
+        self.move(0,1)
         
     def __run__(self) -> None:
         i = 0
@@ -40,8 +56,7 @@ class GamePacMan(Game):
                         pygame.display.flip()
             i = i + 0.125      
             self.change_ghost_state(i)
-            if i % 1.75 == 0:
-                print(i)
+            if i % 0.625 == 0:
                 self.move_gost()
             self.display(self.window)
             pygame.display.update()

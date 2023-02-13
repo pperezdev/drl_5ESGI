@@ -1,9 +1,9 @@
-from back import facades, QLearning, ModelQLearning, DeepQLearning, DoubleDeepQLearning
+from back import facades, QLearning, ModelQLearning, DeepQLearning
 
-game = facades.line_world_1x5()
-# game = facades.pacman()
+#game = facades.line_world_1x5()
+game = facades.pacman()
 
-# game.run()
+game.run()
 #game.run()
 
 #ql = DeepQLearning()
@@ -14,8 +14,7 @@ game = facades.line_world_1x5()
 #max_iterations = 1000 # nombre maximum d'itérations
 #epochs = 200
 
-# ql = DeepQLearning()
-ql = DoubleDeepQLearning()
+ql = DeepQLearning()
 
 gamma = 0.99
 epsilon = 0.1
@@ -29,7 +28,6 @@ epochs = 20
 #model = ql.train(game, alpha=alpha, gamma=gamma, epsilon=epsilon, max_iterations=max_iterations, epochs=epochs, debug=True)
 #model.save()
 
-model = ModelQLearning(is_keras=True)
-model.load("model_lw_ddqn_9a15b91e-abb1-11ed-a7f7-982cbc569c34")
-ql.use(game, model, visible=True)
-
+#model = ModelQLearning(is_keras=True)
+#model.load("model_gw_dqn_037a5175-a6fe-11ed-82da-a8a1598f10d9")
+#ql.use(game, model, visible=True)
