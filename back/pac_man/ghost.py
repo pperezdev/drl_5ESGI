@@ -39,20 +39,11 @@ class Ghost:
         target = self.ghost_state.move(self, pacman)
         number = self.MAX_NUMBER
         
-        vU = Vector2(self.x  - 1, self.y)
-        vL = Vector2(self.x  , self.y- 1)
-        vD = Vector2(self.x  + 1, self.y)
-        vR = Vector2(self.x , self.y + 1)
-        
-        if vL.y == 18 or vR.y == 18: 
+        vU = Vector2(self.x , self.y- 1)
+        vL = Vector2(self.x - 1 , self.y)
+        vD = Vector2(self.x, self.y + 1)
+        vR = Vector2(self.x + 1, self.y)
             
-            if vR.x == 28 and self.last_movement == MovementType.LEFT:
-                self.x = 0
-                self.y = 18
-
-            if vL.x == -1 and self.last_movement == MovementType.RIGHT:
-                self.x = 27
-                self.y = 18
         
         if world.is_wall(vR.x, vR.y) or self.last_movement == MovementType.RIGHT: 
             number -= int(MovementType.RIGHT._value_)
@@ -71,6 +62,15 @@ class Ghost:
         self.old_y = self.y
         self.x = pos.x
         self.y = pos.y
+        if(self.x > world.x):
+            print("teste 2", self.last_movement) 
+        if self.x > world.x and self.last_movement == MovementType.LEFT:
+            self.x = 0
+            self.y = 18
+
+        if self.x < 0 and self.last_movement == MovementType.RIGHT:
+            self.x = 27
+            self.y = 18
             
     def movement(self, movement_type:MovementType, target:Vector2, 
                  vU:Vector2, vL:Vector2, vD:Vector2, vR:Vector2) -> Vector2:

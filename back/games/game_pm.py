@@ -15,6 +15,8 @@ class GamePacMan(Game):
         super().__init__(world, agent)
         self.timer = 0
         self.ghost_list = ghost_list
+        self.screen_x = 1200
+        self.screen_y = 800
         
     def up(self) -> None:
         self.agent.hex_movement = self.agent.HEX_MOVEMENT_UP

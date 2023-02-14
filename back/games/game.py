@@ -15,6 +15,9 @@ class Game:
         self.score = 0
         self.env = world.env
         self.visible = True
+        self.screen_x = 1920
+        self.screen_y = 1080
+        
         
     def get_num_actions(self) -> int:
         return self.world.get_num_actions()
@@ -89,7 +92,7 @@ class Game:
             pygame.init() 
             is_visible =pygame.SHOWN
             
-            self.window = pygame.display.set_mode((1920, 1080), flags=is_visible)
+            self.window = pygame.display.set_mode((self.screen_x, self.screen_y), flags=is_visible)
             self.clock = pygame.time.Clock()
             
             self.window.fill((0, 0, 0))

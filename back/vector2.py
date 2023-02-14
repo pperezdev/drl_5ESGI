@@ -6,6 +6,6 @@ class Vector2:
         self.y = y
         
     def distance(self, a, b) -> float:
-        num1 = (a.x - b.x)
-        num2 = (a.y - b.y)
-        return math.sqrt( num1 * num1 + num2 * num2)
+        num2 = (a.x - b.x)
+        num1 = (a.y - b.y)
+        return math.sqrt(num1 * num1 + num2 * num2)

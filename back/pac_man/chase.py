@@ -8,7 +8,7 @@ class Chase:
 class ChaseRandom(Chase):
     def __init__(self) -> None:
         super().__init__()
-        self.target = Vector2(36, 0)
+        self.target = Vector2(0, 36)
         
     def chase(self, agent:AgentPacman, ghost) -> Vector2:
         dist = Vector2.distance(None,ghost.blinky.pos(), agent.pos())
@@ -23,7 +23,7 @@ class ChasePatrol(Chase):
 
         x = (pos.x * -1) + (pos2.x*2)
         y = (pos.y * -1) + (pos2.y*2)
-        return Vector2(x, y)
+        return Vector2(y, x)
 
 class ChaseAmbush(Chase):
     def chase(self, agent:AgentPacman, ghost) -> Vector2:
@@ -38,7 +38,7 @@ class ChaseAmbush(Chase):
 
         x = int(target_hex[2:4], 16) - 29
         y = (int(target_hex[0:2], 16) - 59)*-1
-        target = Vector2(x, y)
+        target = Vector2(y, x)
 
         return target
 
